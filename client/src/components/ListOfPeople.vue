@@ -2,6 +2,7 @@
 import { onBeforeMount, ref } from 'vue'
 import { useCitizenStore } from '../store/citizenStore';
 import { useCitiesStore } from '../store/citiesStore';
+import ListItem from './ListItem.vue';
 
 const citizenStore = useCitizenStore(),
   citiesStore =  useCitiesStore(),
@@ -22,6 +23,7 @@ function sortingPeople(people) {
       }
 
       if (index === item.groups.length - 1) {
+        item.population = getPopulation(item.city_id);
         currentLevel[key].push(item);
       }
        else {
@@ -46,48 +48,7 @@ onBeforeMount(async () => {
 <template>
   <div class="card">
     <ol class="cities">
-      <li v-for="(districts, city) in sortedPeople" :key="city">
-        <div>{{ city }}</div>
-        
-        <ol class="districts">
-        
-          <li v-for="(streets, district) in districts" :key="district">
-            <div>{{ district }}</div>
-            
-            <ol class="streets">
-              
-              <li v-for="(citizens, street) in streets" :key="street">
-                <div>{{ street }}</div>
-                
-                <ul class="people">
-                  <li v-for="human in citizens" :key="human.id" v-bind:data-population="getPopulation(human.id)">{{ human.name }}</li>
-                </ul>
-              </li>
-            </ol>
-          </li>
-        </ol>
-      </li>
+      <ListItem :data="sortedPeople"></ListItem>
     </ol>
   </div>
 </template>
-
-<style scoped>
-li {
-  list-style-type: none;
-}
-.people li {
-  position: relative;
-
-}
-.people li:hover::before {
-  transition: .5s all;
-  content: attr(data-population);
-  position: absolute;
-  top: 50%;
-  right: -50%;
-  transform: translateY(-50%);
-  background: #000;
-  color: white;
-}
-
-</style>

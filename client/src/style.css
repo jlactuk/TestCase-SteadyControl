@@ -64,7 +64,22 @@ button:focus-visible {
   padding: 2rem;
 
 }
+.human {
+  position: relative;
 
+}
+.human:hover::before {
+  transition: .5s all;
+  content: attr(data-population);
+  position: absolute;
+  top: 50%;
+  right: -50%;
+  transform: translateY(-50%);
+  background: #000;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+}
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
